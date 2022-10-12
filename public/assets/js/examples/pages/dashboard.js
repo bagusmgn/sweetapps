@@ -31,13 +31,13 @@ $(function () {
     colors.danger = '#' + fullColorHex(colors.danger[0], colors.danger[1], colors.danger[2]);
     colors.warning = '#' + fullColorHex(colors.warning[0], colors.warning[1], colors.warning[2]);
 
-    $('#recent-orders').DataTable({
-        lengthMenu: [5, 10],
-        "columnDefs": [{
-            "targets": 5,
-            "orderable": false
-        }]
-    });
+    // $('#recent-orders').DataTable({
+    //     lengthMenu: [5, 10],
+    //     "columnDefs": [{
+    //         "targets": 5,
+    //         "orderable": false
+    //     }]
+    // });
 
     var start = moment().subtract(29, 'days');
     var end = moment();
@@ -46,19 +46,19 @@ $(function () {
         $('#dashboard-daterangepicker span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
     }
 
-    $('#dashboard-daterangepicker').daterangepicker({
-        startDate: start,
-        endDate: end,
-        opens: $('body').hasClass('rtl') ? 'right' : 'left',
-        ranges: {
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
-    }, cb);
+    // $('#dashboard-daterangepicker').daterangepicker({
+    //     startDate: start,
+    //     endDate: end,
+    //     opens: $('body').hasClass('rtl') ? 'right' : 'left',
+    //     ranges: {
+    //         'Today': [moment(), moment()],
+    //         'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+    //         'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+    //         'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+    //         'This Month': [moment().startOf('month'), moment().endOf('month')],
+    //         'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    //     }
+    // }, cb);
 
     cb(start, end);
 
@@ -289,10 +289,10 @@ $(function () {
 
     activityChart();
 
-    $(window).on('load', function () {
-        setTimeout(function () {
-            $('#exampleModal').modal('show');
-        }, 1000);
-    });
+    // $(window).on('load', function () {
+    //     setTimeout(function () {
+    //         $('#exampleModal').modal('show');
+    //     }, 1000);
+    // });
 
 });

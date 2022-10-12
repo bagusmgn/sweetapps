@@ -31,7 +31,6 @@
                                 <thead>
                                     <tr>
                                         <th style="text-align: center">No</th>
-                                        <th style="text-align: center">Species</th>
                                         <th style="text-align: center">Name</th>
                                         <th style="text-align: center">Phone</th>
                                         <th style="text-align: center">Address</th>
@@ -56,7 +55,6 @@
                                     @endif
                                     <tr id="field">
                                         <th scope="row" style="text-align: center">{{ $nomor++ }}</th>
-                                        <td style="text-align: center">{{ $culture->species_id }}</td>
                                         <td style="text-align: center">{{ $culture->names }}</td>
                                         <td style="text-align: center">{{ $culture->phone }}</td>
                                         <td style="text-align: center">{{ $culture->address }}</td>
@@ -82,7 +80,7 @@
 
                         </div>
                         <h6 class="card-title">Create Fields</h6>
-                        <form action="{{ route('lahans.store') }}" method="POST">
+                        <form action="{{ route('lahans.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             @if ($errors->any())
@@ -102,33 +100,84 @@
                                 </div>
                             @endif
 
+                            <div class="form-row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="">Name</label>
+                                    <input type="text" class="form-control" name="names"
+                                           placeholder="Name">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="">Phone</label>
+                                    <input type="number" class="form-control" name="phone"
+                                           placeholder="Phone">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="">Address</label>
+                                    <input type="text" class="form-control" name="address"
+                                           placeholder="Address">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="">Coordinate</label>
+                                    <input type="text" class="form-control" name="coordinate"
+                                           placeholder="Coordinate">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="">Coordinate Description</label>
+                                    <input type="text" class="form-control" name="coordinate_description"
+                                           placeholder="Coordinate Description">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="">Land Type</label>
+                                    <input type="text" class="form-control" name="description_of_land_type"
+                                           placeholder="Land Type">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-12 mb-3">
+                                    <label for="Photo" class="form-label">Photo</label>
+                                    <input type="file" name="image" class="form-control dropzone dz-square" style="height: 200px;" id="Photo" placeholder="image">
+                                </div>
+                            </div>
+
                             <div class="table-responsive" style="margin-top: 2px">
                             <table class="table table-bordered" id="dynamicTable">
                                 <tr>
                                     <th>Species</th>
-                                    <th>Name</th>
-                                    <th>Phone</th>
-                                    <th>Address</th>
-                                    <th>Coordinate</th>
-                                    <th>Coordinate Description</th>
-                                    <th>Tipe Lahan</th>
+                                    <th>local_name</th>
+                                    <th>category</th>
+                                    <th>age</th>
+                                    <th>amount</th>
                                     <th>Action</th>
                                 </tr>
                                 <tr>
                                     <td>
                                         <select class="js-example-basic-single js-states form-control" name="species_id[]">
-                                            <option hidden>Pilih Spesies</option>
                                             @foreach ($species as $item)
                                             <option value="{{ $item->id }}" {{ old('species_id') == $item->id ? 'selected' : null }}>{{ $item->local_name }}</option>
                                             @endforeach
                                         </select>
                                     </td>
-                                    <td><input type="text" name="names[]" placeholder="Enter your Name" class="form-control" /></td>
-                                    <td><input type="number" name="phone[]" placeholder="Enter your Phone" class="form-control" /></td>
-                                    <td><input type="text" name="address[]" placeholder="Enter your Address" class="form-control" /></td>
-                                    <td><input type="text" name="coordinate[]" placeholder="Enter your Coordinate" class="form-control" /></td>
-                                    <td><input type="text" name="coordinate_description[]" placeholder="Enter your Coordinate Description" class="form-control" /></td>
-                                    <td><input type="text" name="description_of_land_type[]" placeholder="Enter your Land Type" class="form-control" /></td>
+                                    <td><input type="text" name="local_name[]" placeholder="Enter your Name" class="form-control" /></td>
+                                    <td><input type="text" name="category[]" placeholder="Enter your Phone" class="form-control" /></td>
+                                    <td><input type="number" name="age[]" placeholder="Enter your Address" class="form-control" /></td>
+                                    <td><input type="number" name="amount[]" placeholder="Enter your Coordinate" class="form-control" /></td>
                                     <td><button type="button" name="add" id="add" class="btn btn-success"><i
                                         class="ti-plus"></i></button></td>
                                 </tr>
@@ -159,29 +208,22 @@
         $("#dynamicTable").append('<tr>' +
             '<td>' +
                 '<select class="js-example-basic-single js-states form-control" name="species_id[]">' +
-                    '<option selected>Choose Species</option>' +
                     '@foreach ($species as $item)' +
                     '<option value="{{ $item->id }}" {{ old('species_id') == $item->id ? 'selected' : null }}>{{ $item->local_name }}</option>' +
                     '@endforeach' +
                 '</select>' +
             '</td>' +
             '<td>' +
-                '<input type="text" name="names[]" placeholder="Enter your Name" class="form-control" />' +
+                '<input type="text" name="local_name[]" placeholder="Enter your Name" class="form-control" />' +
             '</td>' +
             '<td>' +
-                '<input type="text" name="phone[]" placeholder="Enter your Qty" class="form-control"/>' +
+                '<input type="text" name="category[]" placeholder="Enter your Phone" class="form-control" />' +
             '</td>' +
             '<td>' +
-                '<input type="text" name="address[]" placeholder="Enter your Price" class="form-control" />' +
+                '<input type="number" name="age[]" placeholder="Enter your Address" class="form-control" />' +
             '</td>' +
             '<td>' +
-                '<input type="text" name="coordinate[]" placeholder="Enter your Price" class="form-control" />' +
-            '</td>' +
-            '<td>' +
-                '<input type="text" name="coordinate_description[]" placeholder="Enter your Price" class="form-control" />' +
-            '</td>' +
-            '<td>' +
-                '<input type="text" name="description_of_land_type[]" placeholder="Enter your Price" class="form-control" />' +
+                '<input type="number" name="amount[]" placeholder="Enter your Coordinate" class="form-control" />' +
             '</td>' +
             '<td>' +
                 '<button type="button" class="btn btn-danger remove-tr"><i class="ti-close"></i></button>' +

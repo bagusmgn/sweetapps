@@ -454,11 +454,11 @@
                             </a>
                         </li>
                         <li>
-                            <a href="todo-list.html">
+                            <a href="{{route('pages.index')}}">
                                 <span class="nav-link-icon">
                                     <i data-feather="check-square"></i>
                                 </span>
-                                <span>Todo List</span>
+                                <span>Pages</span>
                                 <span class="badge badge-warning">2</span>
                             </a>
                         </li>

@@ -51,6 +51,7 @@
 
                             <div class="table-responsive" style="margin-top: 2px">
                             <table class="table table-bordered" id="dynamicTable">
+                                <thead>
                                 <tr>
                                     <th>Species</th>
                                     <th>Name</th>
@@ -61,26 +62,12 @@
                                     <th>Tipe Lahan</th>
                                     <th>Action</th>
                                 </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
-                                    <td>
-                                        <select class="custom-select" name="species_id[]">
-                                            <option selected>Choose Species</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                          </select>
-                                    </td>
-                                    <td><input type="text" name="names[]" placeholder="Enter your Name" value="{{ $fields->names }}" class="form-control" /></td>
-                                    <td><input type="number" name="phone[]" placeholder="Enter your Qty" class="form-control" /></td>
-                                    <td><input type="text" name="address[]" placeholder="Enter your Price" class="form-control" /></td>
-                                    <td><input type="text" name="coordinate[]" placeholder="Enter your Price" class="form-control" /></td>
-                                    <td><input type="text" name="coordinate_description[]" placeholder="Enter your Price" class="form-control" /></td>
-                                    <td><input type="text" name="description_of_land_type[]" placeholder="Enter your Price" class="form-control" /></td>
-                                    <td>
-                                        <button type="button" name="add" id="add" class="btn btn-success"><i class="ti-plus"></i></button>
-                                        <button class="btn btn-primary" id="update_data" value="{{ $fields->id }}">Update</button>
-                                    </td>
+
                                 </tr>
+                            </tbody>
                             </table>
                             </div>
 
@@ -97,7 +84,67 @@
 @endsection
 @push('scripts')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+<!-- Script -->
+<script type='text/javascript'>
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
+    $(document).ready(function () {
+
+        // Fetch records
+        fetchRecords();
+
+    });
+
+    // Fetch records
+    function fetchRecords() {
+        $.ajax({
+            url: 'getUsers',
+            type: 'get',
+            dataType: 'json',
+            success: function (response) {
+
+                var len = 0;
+                $('#dynamicTable tbody tr:not(:first)').empty(); // Empty <tbody>
+                if (response['data'] != null) {
+                    len = response['data'].length;
+                }
+
+                if (len > 0) {
+                    for (var i = 0; i < len; i++) {
+
+                        var id = response['data'][i].id;
+                        var username = response['data'][i].username;
+                        var name = response['data'][i].name;
+                        var email = response['data'][i].email;
+
+                        var tr_str = "<tr>" +
+                            "<td align='center'><input type='text' class='form-control' value='" + username + "' id='username_" +
+                            id + "' disabled></td>" +
+                            "<td align='center'><input type='text' class='form-control' value='" + name + "' id='name_" + id +
+                            "'></td>" +
+                            "<td align='center'><input type='email' class='form-control' value='" + email + "' id='email_" + id +
+                            "'></td>" +
+                            "<td align=''><input type='button' value='Update' class='btn btn-info update' data-id='" +
+                            id + "' >" + "&nbsp" +"<input type='button' onclick='return confirm('Are you sure you want to delete this item')' value='Delete' class='btn btn-danger delete' data-id='" + id +
+                            "' ></td>" +
+                            "</tr>";
+
+                        $("#dynamicTable tbody").append(tr_str);
+
+                    }
+                } else {
+                    var tr_str = "<tr class='norecord'>" +
+                        "<td align='center' colspan='4'>No record found.</td>" +
+                        "</tr>";
+
+                    $("#dynamicTable tbody").append(tr_str);
+                }
+
+            }
+        });
+    }
+    </script>
 <script type="text/javascript">
 
     var id = $(this).data('id');

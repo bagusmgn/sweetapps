@@ -116,8 +116,12 @@ class SpeciesController extends Controller
      * @param  \App\Models\Species  $species
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Species $species)
+    public function destroy($id)
     {
-        //
+        $culture = Species::find($id)->delete();
+        Alert::toast('Delete Successfully', 'success');
+
+        return redirect()->route('cultures.index')
+                        ->with('success','Product deleted successfully');
     }
 }

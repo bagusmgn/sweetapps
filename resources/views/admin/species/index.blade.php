@@ -60,17 +60,17 @@
                                         <td style="text-align: center">{{ $culture->latin_name }}</td>
                                         <td style="text-align: center">{{ $culture->recording_location }}</td>
                                         <td style="text-align: center">{{ $culture->description }}</td>
-                                        <td style="text-align: center">{{ $culture->image }}</td>
+                                        <td style="text-align: center"><img src="uploads/species_photo/cover/{{ $culture->image }}" style="width: 150px"></td>
                                         <td style="text-align: center">
-                                            <form action="" method="POST">
+                                            <form id="DeleteCategory{{ $culture->id }}" action="{{ route('species.destroy',$culture->id) }}" method="POST">
                                                 <a class="btn btn-sm btn-success btn-floating"
                                                     href="{{ route('lahans.edit', $culture->id) }}"><i class="ti-pencil"></i></a>
                                                 <a class="btn btn-sm btn-info btn-floating" href=""><i
                                                         class="ti-eye"></i></a>
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" id="delete-post" onclick="return confirm('Are you sure?')" class="btn btn-sm btn-danger btn-floating"><i
-                                                        class="ti-trash"></i></button>
+                                                <button type="submit" id="delete-post" onclick="deleteCategory()" class="btn btn-sm btn-danger btn-floating"
+                                                ><i class="ti-trash"></i></button>
                                             </form>
                                         </td>
                                     </tr>
@@ -87,3 +87,44 @@
 
 
 @endsection
+@push('scripts')
+<script>
+    function deleteCategory(id, name) {
+
+        var name = $(this).data("name");
+        var content = document.createElement('div');
+        content.innerHTML = 'Menghapus kategori <strong>'+ name + '</strong> akan menghapus seluruh kategori didalamnya.';
+        Swal.fire({
+            title: 'Apakah kamu yakin?',
+            html: content,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yakin, hapus kategori',
+            cancelButtonText: 'Batalkan'
+        })
+        .then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Sedang menghapus Layanan",
+                    showConfirmButton: false,
+                    timer: 2300,
+                    timerProgressBar: true,
+                    onOpen: () => {
+                        document.getElementById(`DeleteService${id}`).submit();
+                        Swal.fire(
+                        'Terhapus!',
+                        'Category berhasil dihapus',
+                        'success'
+                        )
+                    }
+                });
+            }
+        })
+    }
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+@endpush
